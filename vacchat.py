@@ -1,3 +1,6 @@
+# Author: Arrow6
+# Version: 1.1
+# Errors: on getContactData(Cn)
 import socket
 
 import sys
