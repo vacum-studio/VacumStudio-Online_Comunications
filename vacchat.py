@@ -1,3 +1,5 @@
+# Author: Arrow6
+# Version: 1.0
 import socket
 
 import sys
