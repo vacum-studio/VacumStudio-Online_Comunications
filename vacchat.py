@@ -1,8 +1,7 @@
 # Author: Arrow6
-# Version: 1.1
-# Errors: on getContactData(Cn)
-import socket
+# Version: 1.2
 
+import socket
 import sys
 
 seperator = "--------------------------------------------------------------"
@@ -42,6 +41,9 @@ def writeIpFile():
 
 def printIp():
     print "My ip = " + socket.gethostbyname(socket.getfqdn())
+    print "My ip = " + socket.gethostbyname(socket.gethostname())
+    print seperator
+    afc()
 
 
 def newContact():
@@ -55,6 +57,8 @@ def newContact():
 
 def newParty():
     server(myhost, myport)
+    print seperator
+    afc()
 
 
 def joinParty():
@@ -62,13 +66,31 @@ def joinParty():
 
     host = raw_input("Party's IP address: ")
     port = input("Party's port: ")
-    client(host, port)
+    try:
+        client(host, port)
+    except:
+        print "Conection Failed"
+        command = raw_input("Do you want to retry? ")
+        if command.upper() == "YES":
+            joinParty()
+        else:
+            print seperator
+            afc()
 
 
 def settings():
     f = open("settings.settings", "w")
 
-    f.write()
+    #f.write()
+    f.close()
+    print "To change the default port type -port"
+
+    command = raw_input("-> ")
+
+    if command == "port":
+        global port
+        port = input("New port: ")
+    afc()
 
 
 def server(host, port):
@@ -90,7 +112,8 @@ def server(host, port):
         #print "sending to user:" + str(data)
         c.send(send)
     c.close()
-    sys.exit(0)
+    s.close()
+    afc()
 
 
 def client(host, port):
@@ -108,13 +131,31 @@ def client(host, port):
         message = raw_input("->")
     s.close()
 
+    afc()
+
 
 def afc():
     print "Open a new party by typing -new party."
     print "Join a party by typing -join party."
     print "Call a friend by typing -call."
     print "Change settings by typing -settings."
+    print "To get your IP address type -IP"
     print seperator
+
+    command = raw_input("-> ").upper()
+
+    if command == "NEW PARTY":
+        newParty()
+    elif command == "JOIN PARTY":
+        joinParty()
+    elif command == "SETTINGS":
+        settings()
+    elif command == "EXIT":
+        sys.exit()
+    elif command == "IP":
+        printIp()
+    else:
+        afc()
 
 
 def run():
